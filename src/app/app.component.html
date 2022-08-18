@@ -1,0 +1,52 @@
+<div class="container">
+  <div class="row mt-2 mb-2">
+    <h4 class="text-center">Todo List</h4>
+    <div class="col-md-12">
+      <div class="row taskParent">
+        <div class="col-md-5">
+          <label>Task Name:</label>
+          <input type="text" class="form-control" placeholder="Enter task" [(ngModel)]="todoData.taskName">
+        </div>
+        <div class="col-md-4">
+          <label>Date:</label>
+          <input type="date" class="form-control" [(ngModel)]="todoData.taskDate">
+        </div>
+        <div class="col-md-3">
+          <button class="btn btn-primary" (click)="submit()">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- display todo -->
+  <div class="row mt-2 mb-2" *ngIf="todoList.length > 0">
+    <div class="co-md-12">
+      <table class="table">
+        <tr>
+          <th>No.</th>
+          <th>Task Name</th>
+          <th>Task Deadline</th>
+          <th>Action</th>
+        </tr>
+        <tr *ngFor="let i of todoList;let j = index" [formGroup]="updateForm">
+          <td>{{j+1}}</td>
+          <td>
+            <span *ngIf="!i.isUpdate">{{i.taskName}}</span>
+            <input type="text" formControlName="taskName" [value]="i.taskName" class="form-control" *ngIf="i.isUpdate">
+          </td>
+          <td>
+            <span *ngIf="!i.isUpdate">{{i.taskDate | date}}</span>
+            <input type="date" formControlName="taskDate" value="{{i.taskDate | date}}" class="form-control"
+              *ngIf="i.isUpdate">
+          </td>
+          <td>
+            <button class="btn btn-primary m-1" (click)="editTodo(i._id,'edit')" *ngIf="!i.isUpdate">Edit</button>
+            <button class="btn btn-warning m-1" (click)="updateTodo(i)" *ngIf="i.isUpdate">Update</button>
+            <button class="btn btn-secondary m-1" (click)="editTodo(i._id,'cancel')" *ngIf="i.isUpdate">Cancel</button>
+            <button class="btn btn-danger m-1" (click)="deleteTodo(i._id)" *ngIf="!i.isUpdate">Delete</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
